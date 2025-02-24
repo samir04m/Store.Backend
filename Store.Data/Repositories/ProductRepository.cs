@@ -1,5 +1,6 @@
 ﻿using Store.Data.Entities;
 using Store.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace Store.Data.Repositories
 
         public async Task<Product> AddAsync(Product product)
         {
+            bool categoryExists = await _context.Categories.AnyAsync(c => c.Id == product.CategoryId);
+            if (!categoryExists)
+            {
+                throw new ArgumentException("The specified CategoryId does not exist.");
+            }
+
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return product;
@@ -34,10 +41,13 @@ namespace Store.Data.Repositories
         public async Task<Product> UpdateAsync(Product product)
         {
             var existingProduct = await _context.Products.FindAsync(product.Id);
-            if (existingProduct == null)
+            bool categoryExists = await _context.Categories.AnyAsync(c => c.Id == product.CategoryId);
+
+            if (existingProduct == null || !categoryExists)
             {
                 return null;
             }
+
             existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
             existingProduct.ImageUrl = product.ImageUrl;
