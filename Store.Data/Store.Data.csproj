@@ -54,6 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\CategoryConfiguration.cs" />
+    <Compile Include="Configurations\ProductConfigutation.cs" />
+    <Compile Include="Migrations\202502230512570_CreateTableProductAndCategory.cs" />
+    <Compile Include="Migrations\202502230512570_CreateTableProductAndCategory.Designer.cs">
+      <DependentUpon>202502230512570_CreateTableProductAndCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502230520335_Add_Index_Product_Name_Category.cs" />
+    <Compile Include="Migrations\202502230520335_Add_Index_Product_Name_Category.Designer.cs">
+      <DependentUpon>202502230520335_Add_Index_Product_Name_Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyDbContext.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -64,6 +75,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202502230512570_CreateTableProductAndCategory.resx">
+      <DependentUpon>202502230512570_CreateTableProductAndCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502230520335_Add_Index_Product_Name_Category.resx">
+      <DependentUpon>202502230520335_Add_Index_Product_Name_Category.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

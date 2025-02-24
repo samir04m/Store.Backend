@@ -7,7 +7,7 @@ namespace Store.Business.Interfaces
     {
         //Task<IEnumerable<ProductDto>> GetAllProducts(string searchTerm, int? categoryId, string sortBy, bool ascending);
         Task<ProductDto> GetProductById(int id);
-        //Task AddProductAsync(ProductDto product);
+        Task<ProductDto> AddProductAsync(ProductDto productDto);
         //Task UpdateProductAsync(ProductDto product);
         //Task DeleteProductAsync(int id);
     }
