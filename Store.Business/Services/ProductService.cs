@@ -33,5 +33,21 @@ namespace Store.Business.Services
             var productCreated = await _productRepository.GetByIdAsync(newProduct.Id);
             return ProductMapper.ToDto(productCreated);
         }
+
+        public async Task<ProductDto> UpdateProductAsync(ProductDto productDto)
+        {
+            var productEntity = ProductMapper.ToEntity(productDto);
+            var updatedProduct = await _productRepository.UpdateAsync(productEntity);
+
+            return updatedProduct != null 
+                ? ProductMapper.ToDto(updatedProduct) 
+                : null;
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            return await _productRepository.DeleteAsync(id);
+        }
+
     }
 }

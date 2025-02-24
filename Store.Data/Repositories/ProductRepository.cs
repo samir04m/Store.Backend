@@ -1,5 +1,6 @@
 ﻿using Store.Data.Entities;
 using Store.Data.Interfaces;
+using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
@@ -28,5 +29,34 @@ namespace Store.Data.Repositories
             await _context.SaveChangesAsync();
             return product;
         }
+
+        public async Task<Product> UpdateAsync(Product product)
+        {
+            var existingProduct = await _context.Products.FindAsync(product.Id);
+            if (existingProduct == null)
+            {
+                return null;
+            }
+            existingProduct.Name = product.Name;
+            existingProduct.Description = product.Description;
+            existingProduct.ImageUrl = product.ImageUrl;
+            existingProduct.CategoryId = product.CategoryId;
+
+            await _context.SaveChangesAsync();
+            return existingProduct;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return false;
+            }
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
