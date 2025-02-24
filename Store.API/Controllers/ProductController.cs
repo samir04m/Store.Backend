@@ -1,6 +1,6 @@
 ﻿using Store.Business.DTOs;
 using Store.Business.Interfaces;
-using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -95,6 +95,23 @@ namespace Store.API.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IHttpActionResult> GetProducts(string search = "", string sortBy = "name", bool ascending = true)
+        {
+            try
+            {
+                var products = await _productService.GetProductsAsync(search, sortBy, ascending);
+                if (products.Any())
+                {
+                    return Ok(products);
+                }
+                return Content(HttpStatusCode.NotFound, "No se encontraron productos.");
+            }
+            catch
+            {
+                return Content(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
+        }
 
     }
 }

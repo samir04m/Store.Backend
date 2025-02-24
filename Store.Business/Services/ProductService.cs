@@ -2,7 +2,8 @@
 using Store.Business.Interfaces;
 using Store.Data.Entities;
 using Store.Data.Interfaces;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.Business.Services
@@ -49,5 +50,10 @@ namespace Store.Business.Services
             return await _productRepository.DeleteAsync(id);
         }
 
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync(string search, string sortBy, bool ascending)
+        {
+            var products = await _productRepository.GetProductsAsync(search, sortBy, ascending);
+            return products.Select(p => ProductMapper.ToDto(p));
+        }
     }
 }

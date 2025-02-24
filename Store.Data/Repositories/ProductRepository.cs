@@ -1,7 +1,8 @@
 ﻿using Store.Data.Entities;
 using Store.Data.Interfaces;
-using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.Data.Repositories
@@ -58,5 +59,28 @@ namespace Store.Data.Repositories
             return true;
         }
 
+        public async Task<IEnumerable<Product>> GetProductsAsync(string search, string sortBy, bool ascending)
+        {
+            IQueryable<Product> query = _context.Products.Include(p => p.Category);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(p => p.Name.Contains(search) ||
+                                         p.Description.Contains(search) ||
+                                         p.Category.Name.Contains(search));
+            }
+
+            switch (sortBy?.ToLower())
+            {
+                case "category":
+                    query = ascending ? query.OrderBy(p => p.Category.Name) : query.OrderByDescending(p => p.Category.Name);
+                    break;
+                default:
+                    query = ascending ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+                    break;
+            }
+
+            return await query.AsNoTracking().ToListAsync();
+        }
     }
 }
